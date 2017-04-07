@@ -52,6 +52,38 @@ CREATE TABLE People (
 ALTER TABLE Parents ADD FOREIGN KEY (Parent_1_id) REFERENCES People(person_id);
 ALTER TABLE Parents ADD FOREIGN KEY (Parent_1_id) REFERENCES People(person_id);
 
+CREATE TABLE Registry (
+    registry_id VARCHAR(10) NOT NULL, 
+    name VARCHAR(60) NOT NULL, 
+    location INTEGER NOT NULL,
+    PRIMARY KEY (registry_id),
+    FOREIGN KEY (location) REFERENCES Locations(location_id),
+);
+
+CREATE TABLE Marriages (
+    certificate_no VARCHAR(20) NOT NULL, 
+    registration_date DATE NOT NULL, 
+    registration_place VARCHAR(10) NOT NULL,
+    PRIMARY KEY (certificate_no),
+    FOREIGN KEY (registration_place) REFERENCES Registry(registry_id),
+);
+
+CREATE TABLE Married_People (
+    person_id VARCHAR(20) NOT NULL, 
+    certificate_no VARCHAR(20) NOT NULL, 
+    PRIMARY KEY (person_id, certificate_no),
+    FOREIGN KEY (person_id) REFERENCES People(person_id),
+    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no),
+);
+
+CREATE TABLE Witnesses (
+    person_id VARCHAR(20) NOT NULL, 
+    certificate_no VARCHAR(20) NOT NULL, 
+    PRIMARY KEY (person_id, certificate_no),
+    FOREIGN KEY (person_id) REFERENCES People(person_id),
+    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no),
+);
+
 INSERT INTO Countries
     VALUES  (1, 'Ireland'),
             (2, 'The United Kingdom of Great Britain and Northern Ireland'),
