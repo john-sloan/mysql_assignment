@@ -52,12 +52,12 @@ CREATE TABLE People (
 ALTER TABLE Parents ADD FOREIGN KEY (Parent_1_id) REFERENCES People(person_id);
 ALTER TABLE Parents ADD FOREIGN KEY (Parent_1_id) REFERENCES People(person_id);
 
-CREATE TABLE Registry (
+CREATE TABLE Registries (
     registry_id VARCHAR(10) NOT NULL, 
     name VARCHAR(60) NOT NULL, 
     location INTEGER NOT NULL,
     PRIMARY KEY (registry_id),
-    FOREIGN KEY (location) REFERENCES Locations(location_id),
+    FOREIGN KEY (location) REFERENCES Locations(location_id)
 );
 
 CREATE TABLE Marriages (
@@ -65,7 +65,7 @@ CREATE TABLE Marriages (
     registration_date DATE NOT NULL, 
     registration_place VARCHAR(10) NOT NULL,
     PRIMARY KEY (certificate_no),
-    FOREIGN KEY (registration_place) REFERENCES Registry(registry_id),
+    FOREIGN KEY (registration_place) REFERENCES Registries(registry_id)
 );
 
 CREATE TABLE Married_People (
@@ -73,7 +73,7 @@ CREATE TABLE Married_People (
     certificate_no VARCHAR(20) NOT NULL, 
     PRIMARY KEY (person_id, certificate_no),
     FOREIGN KEY (person_id) REFERENCES People(person_id),
-    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no),
+    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no)
 );
 
 CREATE TABLE Witnesses (
@@ -81,8 +81,26 @@ CREATE TABLE Witnesses (
     certificate_no VARCHAR(20) NOT NULL, 
     PRIMARY KEY (person_id, certificate_no),
     FOREIGN KEY (person_id) REFERENCES People(person_id),
-    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no),
+    FOREIGN KEY (certificate_no) REFERENCES Marriages(certificate_no)
 );
+
+CREATE TABLE Courts (
+    court_id VARCHAR(8) NOT NULL, 
+    name VARCHAR(40) NOT NULL, 
+    location INTEGER NOT NULL,
+    PRIMARY KEY (court_id),
+    FOREIGN KEY (location) REFERENCES Locations(location_id)
+);
+
+CREATE TABLE Divorces (
+    decree_no VARCHAR(20) NOT NULL, 
+    divorce_date DATE NOT NULL,  
+    divorce_place VARCHAR(8) NOT NULL,
+    PRIMARY KEY (decree_no),
+    FOREIGN KEY (divorce_place) REFERENCES Courts(court_id)
+);
+
+
 
 INSERT INTO Countries
     VALUES  (1, 'Ireland'),
